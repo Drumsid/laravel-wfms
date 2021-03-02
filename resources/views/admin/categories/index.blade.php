@@ -2,7 +2,7 @@
 
 @section('content')
   <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
+  {{-- <div class="content-wrapper"> --}}
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <div class="container-fluid">
@@ -76,7 +76,7 @@
                             </div>
                             <!-- /.card-body -->
                             <div class="card-footer clearfix">
-                                {{ $categories->links() }}
+                                {{ $categories->links('vendor.pagination.bootstrap-4') }}
                                 {{-- <ul class="pagination pagination-sm m-0 float-right">
                                     <li class="page-item"><a class="page-link" href="#">«</a></li>
                                     <li class="page-item"><a class="page-link" href="#">1</a></li>
@@ -95,6 +95,6 @@
             </div><!-- /.container-fluid -->
         </section>
     <!-- /.content -->
-  </div>
+  {{-- </div> --}}
   <!-- /.content-wrapper -->
 @endsection
