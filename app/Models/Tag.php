@@ -12,6 +12,10 @@ class Tag extends Model
     use HasFactory;
     use HasSlug;
 
+    protected $fillable = [
+        'title',
+    ];
+
     public function posts()
     {
         return $this->belongsToMany(Post::class);
