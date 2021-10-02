@@ -57,16 +57,16 @@
                                 <label for="category_id">Категория</label>
                                 <select class="form-control" id="category_id" name="category_id">
                                     @foreach($categories as $id => $title)
-                                    <option value="{{$id}}">{{$title}}</option>
+                                        <option value="{{$id}}">{{$title}}</option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label for="tags">Тэги</label>
-                                <select class="select2" id="tags" name="tag[]" multiple="multiple"
+                                <select class="select2" id="tags" name="tags[]" multiple="multiple"
                                     data-placeholder="Выбрать тэги" style="width: 100%;">
                                     @foreach($tags as $id => $title)
-                                    <option value="{{$id}}">{{$title}}</option>
+                                        <option value="{{$id}}">{{$title}}</option>
                                     @endforeach
                                 </select>
                             </div>

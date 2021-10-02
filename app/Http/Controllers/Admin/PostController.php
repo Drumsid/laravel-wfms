@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Post;
 use App\Models\Tag;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -43,9 +44,17 @@ class PostController extends Controller
     {
         $request->validate([
             'title' => 'required',
+            'description' => 'required',
+            'content' => 'required',
+            'category_id' => 'required',
+            'thumbnail' => 'nullable|image',
         ]);
-        dd($request->all());
-        // Category::create($request->all());
+        $data = $request->all();
+
+        $data['thumbnail'] = Post::uploadImage($request);
+
+        $post = Post::create($data);
+        $post->tags()->sync($request->tags);
         return redirect()->route('posts.index')->with('success', 'Статья добавлена!');
     }
 
@@ -68,8 +77,10 @@ class PostController extends Controller
      */
     public function edit($id)
     {
-        // $category = Category::find($id);
-        // return view('admin.posts.edit', compact('category'));
+        $post = Post::find($id);
+        $categories = Category::pluck('title', 'id')->all();
+        $tags = Tag::pluck('title', 'id')->all();
+        return view('admin.posts.edit', compact('post', 'categories', 'tags'));
     }
 
     /**
@@ -81,14 +92,23 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
-    //     $category = Category::findOrFail($id);
-    //     $data = $this->validate($request, [
-    //         'title' => 'required'
-    //     ]);
-    //     $category->fill($data);
-    //     $category->save();
-    //     return redirect()
-    //         ->route('categories.index')->with('success', 'Категория изменена!');
+        $post = Post::find($id);
+        $request->validate([
+            'title' => 'required',
+            'description' => 'required',
+            'content' => 'required',
+            'category_id' => 'required',
+            'thumbnail' => 'nullable|image',
+        ]);
+
+        $data = $request->all();
+
+        $data['thumbnail'] = Post::uploadImage($request, $post->thumbnail);
+
+        $post->update($data);
+        $post->tags()->sync($request->tags);
+        return redirect()
+            ->route('posts.index')->with('success', 'Статья изменена!');
     }
 
     /**
@@ -99,10 +119,12 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        // $category = Category::find($id);
-        // if ($category) {
-        //     $category->delete();
-        // }
-        // return redirect()->route('categories.index')->with('success', 'Категория удалена!');
+        $post = Post::find($id);
+        if ($post) {
+            Storage::delete($post->thumbnail);
+            $post->tags()->sync([]);
+            $post->delete();
+        }
+        return redirect()->route('posts.index')->with('success', 'Статья удалена!');
     }
 }

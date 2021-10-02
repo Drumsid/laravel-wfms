@@ -52,14 +52,14 @@
                                                     <td>{{ $post->id }}</td>
                                                     <td>{{ $post->title }}</td>
                                                     <td>{{ $post->category->title }}</td>
-                                                    <td>{{ $post->tags }}</td>
+                                                    <td>{{ $post->tags->pluck('title')->join(', ') }}</td>
                                                     <td>{{ $post->created_at }}</td>
                                                     <td>
-                                                        <a href="{{ route('post.edit', ['post' => $post->id]) }}" class="btn btn-info btn-sm float-left mr-1">
+                                                        <a href="{{ route('posts.edit', ['post' => $post->id]) }}" class="btn btn-info btn-sm float-left mr-1">
                                                             <i class="fas fa-pencil-alt"></i>
                                                         </a>
 
-                                                        <form action="{{ route('post.destroy', ['post' => $post->id]) }}" method="post" class="float-left">
+                                                        <form action="{{ route('posts.destroy', ['post' => $post->id]) }}" method="post" class="float-left">
                                                             @csrf
                                                             @method('DELETE')
                                                             <button type="submit" class="btn btn-danger btn-sm"
@@ -81,13 +81,6 @@
                             <!-- /.card-body -->
                             <div class="card-footer clearfix">
                                 {{ $posts->links('vendor.pagination.bootstrap-4') }}
-                                {{-- <ul class="pagination pagination-sm m-0 float-right">
-                                    <li class="page-item"><a class="page-link" href="#">«</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">»</a></li>
-                                </ul> --}}
                             </div>
                         </div>
                         <!-- /.card -->

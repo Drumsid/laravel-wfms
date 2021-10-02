@@ -38,7 +38,7 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required',
+            'title' => 'required|unique:categories|min:3',
         ]);
         Category::create($request->all());
         return redirect()->route('categories.index')->with('success', 'Категория добавлена!');
@@ -78,7 +78,7 @@ class CategoryController extends Controller
     {
         $category = Category::findOrFail($id);
         $data = $this->validate($request, [
-            'title' => 'required'
+            'title' => 'required|unique:categories|min:3'
         ]);
         $category->fill($data);
         $category->save();
